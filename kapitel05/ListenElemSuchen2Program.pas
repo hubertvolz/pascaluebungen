@@ -1,6 +1,7 @@
 {$R+} 
 {$B+} 
 
+{ Programm zur Veranschaulichung von ListenElemSuchen auf Seite 175 }
 program ListenElemSuchen2Program(input, output);
 
 	const
