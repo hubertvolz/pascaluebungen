@@ -62,16 +62,15 @@ program SortiertEinfuegenProgram(input, output);
 			begin
 				write('Einfuegen am Listenanfang: ', ioRefAnfang^.info);
 				writeln(' wir wollen einfuegen: ' , inZahl);
-				RefNeu^.next := ioRefAnfang;
-				ioRefAnfang := RefNeu
+				RefNeu^.next := ioRefAnfang; {Das neue Element hat als next den alten Anfang}
+				ioRefAnfang := RefNeu {Der Anfang ist nun das neue Element}
 			end
 			else
 			{ Einfuegeposition suchen } 
 			begin
 				gefunden := false;
 				Zeiger := ioRefAnfang;
-				while (Zeiger^.next <> nil) and40
-				(not gefunden) do
+				while (Zeiger^.next <> nil) and (not gefunden) do
 					if Zeiger^.next^.info > inZahl then
 						gefunden := true
 					else
@@ -79,7 +78,7 @@ program SortiertEinfuegenProgram(input, output);
 				if gefunden then
 				{ Normalfall: Einfuegen in die Liste } 
 				begin
-					write('Normalfall: ', ioRefAnfang^.info);
+					write('Normalfall: ', Zeiger^.info);
 					writeln(' wir wollen einfuegen: ' , inZahl);
 					RefNeu^.next := Zeiger^.next;
 					Zeiger^.next := RefNeu
@@ -87,11 +86,12 @@ program SortiertEinfuegenProgram(input, output);
 				else
 				{ Sonderfall: Anhaengen an das Listenende } 
 				begin
-					write('Anhaengen an das Listenende: ', ioRefAnfang^.info);
+					write('Anhaengen an das Listenende: ', Zeiger^.info);
 					writeln(' wir wollen einfuegen: ' , inZahl);
 					Zeiger^.next := RefNeu;
 					RefNeu^.next := nil end
 				end
+
 			end; { SortiertEinfuegen }
 
 	procedure ListeDurchlaufen (inRefAnfang : tRefListe);
