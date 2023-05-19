@@ -1,11 +1,9 @@
 {$R+} 
 {$B+} 
 
-{ Programm zur Veranschaulichung von SortiertEinfuegen auf Seite 176-177 }
+{ Programm zur Veranschaulichung von SortiertEinfuegen auf Seite 176-177 : Absteigend sortierten Listen}
 program SortiertEinfuegenProgram(input, output);
 
-	const
-	XWERTE : array [1 ..5]  of integer = (10, 7,6,3,1);
 
 	type
 	tRefListe = ^tListe; 
@@ -15,8 +13,30 @@ program SortiertEinfuegenProgram(input, output);
 						end;
 						
 	var
-  StartZeiger, HilfsZeiger: tRefListe;
-  i, einfuegeZahl: integer;
+  Anfang: tRefListe;
+  einfuegeZahl: integer;
+  
+  procedure ListeAufbauen(var outRefAnfang : tRefListe); 
+  { baut eine Liste aus einzulesenden integer-Zahlen auf }
+
+    var
+    Zeiger : tRefListe;
+    Zahl : integer;
+    
+    begin
+      { zunaechst outRefAnfang auf nil setzen, da mit der leeren Liste gestartet wird }
+    outRefAnfang := nil; 
+    readln (Zahl);
+    while Zahl <> 0 do 
+    begin
+      new (Zeiger);
+      Zeiger^.info := Zahl;
+      Zeiger^.next := outRefAnfang;
+      outRefAnfang := Zeiger;
+      readln (Zahl)
+    end { while-Schleife } 
+  end; { ListeAufbauen }
+  
 
 	procedure SortiertEinfuegen ( inZahl : integer;	var ioRefAnfang : tRefListe);
 		{ fuegt ein neues Element fuer inZahl in eine sortierte Liste ein }
@@ -32,6 +52,7 @@ program SortiertEinfuegenProgram(input, output);
 		if ioRefAnfang = nil then
 		{ Sonderfall: Liste ist leer } 
 		begin
+			writeln('wir machen neue Liste');
 			RefNeu^.next := ioRefAnfang;
 			ioRefAnfang := RefNeu
 		end
@@ -39,6 +60,8 @@ program SortiertEinfuegenProgram(input, output);
 			if ioRefAnfang^.info > inZahl then
 			{ Sonderfall: Einfuegen am Listenanfang } 
 			begin
+				write('Einfuegen am Listenanfang: ', ioRefAnfang^.info);
+				writeln(' wir wollen einfuegen: ' , inZahl);
 				RefNeu^.next := ioRefAnfang;
 				ioRefAnfang := RefNeu
 			end
@@ -47,7 +70,7 @@ program SortiertEinfuegenProgram(input, output);
 			begin
 				gefunden := false;
 				Zeiger := ioRefAnfang;
-				while (Zeiger^.next <> nil) and
+				while (Zeiger^.next <> nil) and40
 				(not gefunden) do
 					if Zeiger^.next^.info > inZahl then
 						gefunden := true
@@ -56,56 +79,53 @@ program SortiertEinfuegenProgram(input, output);
 				if gefunden then
 				{ Normalfall: Einfuegen in die Liste } 
 				begin
+					write('Normalfall: ', ioRefAnfang^.info);
+					writeln(' wir wollen einfuegen: ' , inZahl);
 					RefNeu^.next := Zeiger^.next;
 					Zeiger^.next := RefNeu
 				end
 				else
 				{ Sonderfall: Anhaengen an das Listenende } 
 				begin
+					write('Anhaengen an das Listenende: ', ioRefAnfang^.info);
+					writeln(' wir wollen einfuegen: ' , inZahl);
 					Zeiger^.next := RefNeu;
 					RefNeu^.next := nil end
 				end
 			end; { SortiertEinfuegen }
 
-	procedure printListe(inRefAnfang: tRefListe);
-	var
-	Zeiger : tRefListe;
-	
-	begin
-		writeln('Ausgabe der Liste:');
-		Zeiger := inRefAnfang;
-		while (Zeiger^.next <> nil) do 
-		begin
-			writeln('element.info: ',Zeiger^.info);
-			Zeiger := Zeiger^.next;
-		end;
-		writeln('element.info: ',Zeiger^.info);
-	end;
+	procedure ListeDurchlaufen (inRefAnfang : tRefListe);
+  { gibt die Werte der Listenelemente aus }
 
+  var
+    Zeiger : tRefListe;
+  begin
+    Zeiger := inRefAnfang;
+    while Zeiger <> nil do
+    begin
+      writeln (Zeiger^.info);
+      Zeiger := Zeiger^.next
+    end
+  end; { ListeDurchlaufen }
 
 {Hauptprogramm}
 begin
 	
-	StartZeiger := nil;
-	writeln('wir bauen Liste auf aus XWERTE-array');
-	for i := 1 to 5 do
-	begin
-		new(HilfsZeiger);
-		writeln('Element: ', XWERTE[i]);
-		HilfsZeiger^.info := XWERTE[i];
-		HilfsZeiger^.next := StartZeiger;
-		StartZeiger := HilfsZeiger;
-	end;
+	
+	Anfang := nil;
+  writeln('Liste Aufbauen');
+  ListeAufbauen(Anfang);
+  	
 	writeln('Die Liste vor der Bearbeitung');
-	printListe(StartZeiger);
+	ListeDurchlaufen(Anfang);
 	
 	writeln('Bitte Zahl eingeben, die in die Liste eingefuegt werden soll: ');
 	readln(einfuegeZahl);
 	
-	SortiertEinfuegen(einfuegeZahl,StartZeiger);
+	SortiertEinfuegen(einfuegeZahl,Anfang);
 	
 	writeln('Die Liste nach der Bearbeitung');
-	printListe(StartZeiger);
+	ListeDurchlaufen(Anfang);
 
 
 end.

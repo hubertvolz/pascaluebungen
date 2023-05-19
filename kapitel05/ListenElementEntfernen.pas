@@ -12,7 +12,7 @@ program ListenElementEntfernen(input, output);
 
   
   var
-  Anfang: tRefListe;  
+  Anfang, Bla: tRefListe;  
   loescheZahl: integer;
   gefunden: boolean;
   
@@ -108,8 +108,18 @@ begin
   Anfang := nil;
   writeln('Liste Aufbauen');
   ListeAufbauen(Anfang);
+  
+  writeln('Anfang steht auf: ',Anfang^.info);
+  
   writeln('Liste ausgeben');
   ListeDurchlaufen(Anfang);
+  writeln('Wir fuegen Bla hinzu');
+  new(Bla);
+  Bla^.info := 1000;
+  Bla^.next := Anfang;
+  Anfang := Bla;
+  ListeDurchlaufen(Anfang);
+  
   writeln('Listenelement entfernen: bitte Zahl eingeben:');
   readln(loescheZahl);
   ListenElemEntfernen(loescheZahl,Anfang,gefunden);
