@@ -102,4 +102,5 @@ program ListenMultiplizieren(input,output);
 		writeln('f(x,y): ', fwert);
 		gwert := f(y,z);
 		writeln('f(y,z): ', gwert);
+		wirteln('hallo Kathrin');
 	end.
