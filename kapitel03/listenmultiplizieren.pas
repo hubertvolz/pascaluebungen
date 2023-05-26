@@ -99,7 +99,7 @@ program ListenMultiplizieren(input,output);
 		
 		writeln('fertig mit Eingabe');
 		fwert := f(x,y);
-		writeln('f(x,y)', fwert);
+		writeln('f(x,y): ', fwert);
 		gwert := f(y,z);
-		writeln('g(y,z)', gwert);
+		writeln('g(y,z): ', gwert);
 	end.
