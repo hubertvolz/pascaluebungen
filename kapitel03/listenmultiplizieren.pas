@@ -51,7 +51,7 @@ program ListenMultiplizieren(input,output);
 
 	function f(inA : tRefListe; inB : tRefListe) : integer;
 	begin
-	  writeln('in f');
+	  //writeln('in f');
 		if c(inA,inB) then
 			f := m(inA,inB)
 		else
@@ -101,5 +101,5 @@ program ListenMultiplizieren(input,output);
 		fwert := f(x,y);
 		writeln('f(x,y): ', fwert);
 		gwert := f(y,z);
-		writeln('g(y,z): ', gwert);
+		writeln('f(y,z): ', gwert);
 	end.
