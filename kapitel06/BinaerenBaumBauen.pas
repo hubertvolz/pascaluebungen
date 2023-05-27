@@ -80,9 +80,9 @@ program binaerenBaumBauen(input, output);
     begin  
       writeln('Aktueller Knoten: ',outRefWurzel^.info, ' schritt: ', schritt);
       schritt := schritt +1;
-      writeln('wir gehen links');
+      writeln('wir gehen links in Knoten: ', outRefWurzel^.info);
       BBAusgeben := BBAusgeben(outRefWurzel^.links, schritt);
-      writeln('wir gehen rechts');
+      writeln('wir gehen rechts in Knoten: ', outRefWurzel^.info);
       BBAusgeben := BBAusgeben(outRefWurzel^.rechts, schritt);
     end;
   end;    
