@@ -74,7 +74,7 @@ program binaerenBaumBauen(input, output);
     end
   end; { BBAufbauen }
   
-  function BBAusgeben(var outRefWurzel : tRefBinBaum;  var schritt: integer) : tRefBinBaum;
+  function BBAusgeben(outRefWurzel : tRefBinBaum;  schritt: integer) : tRefBinBaum;
   begin
     if(outRefWurzel <> nil) then
     begin  
