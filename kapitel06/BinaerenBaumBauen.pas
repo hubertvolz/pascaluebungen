@@ -88,21 +88,28 @@ program binaerenBaumBauen(input, output);
     end;
   end;    
   
-  function x(B:tRefBinBaum; schritt:integer):boolean;   
+  function x(B:tRefBinBaum; schritt:integer; seite:char):boolean;   
   begin
-    schritt := schritt +1;
+    
     if B = nil then
     begin
-      writeln('Abbruch bei Schritt: ', schritt); 
+      write('aktueller Schritt: ', schritt); 
+      write(', Seite: ', seite);
+      writeln(', Abbruch');
       x := true;      
     end
     else
     begin
-     writeln('B^.info: ', B^.info);
-     writeln('aktueller Schritt: ', schritt);
-     x := x(B^.links, schritt) XOR x(B^.rechts, schritt);
+     write('aktueller Schritt: ', schritt);
+     write(', Seite: ', seite);
+     writeln(', B^.info: ', B^.info);
+     x := x(B^.links, schritt+1, 'l') XOR x(B^.rechts, schritt+1, 'r');
+     write('aktueller Schritt: ', schritt);
+     write(', Seite: ', seite);
+     writeln(', x: ', x);
+
     end;
-    
+    //schritt := schritt +1;
   end;
   
 
@@ -113,7 +120,7 @@ begin
   //schritt := 0;
   //BBAusgeben(binBaum,schritt);
   
-  xAusgabe := x(binBaum, 0);
+  xAusgabe := x(binBaum, 0, 'w');
   writeln('Ausgabe von x: ', xAusgabe);
 
 end.
