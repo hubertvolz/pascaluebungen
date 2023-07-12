@@ -13,7 +13,8 @@ program binaerenBaumBauen(input, output);
 
   var
   binBaum: tRefBinBaum;
-  schritt: integer;
+  //schritt: integer;
+  xAusgabe: boolean;
 
   procedure BBKnotenEinfuegen ( inZahl : integer;
     var ioRefWurzel : tRefBinBaum);
@@ -87,12 +88,32 @@ program binaerenBaumBauen(input, output);
     end;
   end;    
   
+  function x(B:tRefBinBaum; schritt:integer):boolean;   
+  begin
+    schritt := schritt +1;
+    if B = nil then
+    begin
+      writeln('Abbruch bei Schritt: ', schritt); 
+      x := true;      
+    end
+    else
+    begin
+     writeln('B^.info: ', B^.info);
+     writeln('aktueller Schritt: ', schritt);
+     x := x(B^.links, schritt) XOR x(B^.rechts, schritt);
+    end;
+    
+  end;
+  
 
 begin
   writeln('wir bauen Baum');
   BBAufbauen(binBaum);
-  writeln('wir geben Baum nun aus');
-  schritt := 0;
-  BBAusgeben(binBaum,schritt);
+  //writeln('wir geben Baum nun aus');
+  //schritt := 0;
+  //BBAusgeben(binBaum,schritt);
+  
+  xAusgabe := x(binBaum, 0);
+  writeln('Ausgabe von x: ', xAusgabe);
 
 end.
