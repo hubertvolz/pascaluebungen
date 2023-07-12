@@ -95,7 +95,7 @@ program binaerenBaumBauen(input, output);
     begin
       write('aktueller Schritt: ', schritt); 
       write(', Seite: ', seite);
-      writeln(', Abbruch');
+      writeln(', Abbruch, also x: TRUE');
       x := true;      
     end
     else
