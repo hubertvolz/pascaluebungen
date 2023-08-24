@@ -1,19 +1,28 @@
 
+
 {$R+}
 {$B+}
 
 program binaerenBaumBauen(input, output);
 
   type
-  tRefBinBaum = ^tBinBaum; tBinBaum = record
+  tRefBinBaum = ^tBinBaum; 
+  tBinBaum = record
                  info : integer;
                  links : tRefBinBaum;
                  rechts : tRefBinBaum
-  end;
+              end;
+  
+  tRefListe = ^tListe;
+  tListe = record
+              wert:integer;
+              next:tRefListe
+            end;
 
   var
   binBaum: tRefBinBaum;
-  //schritt: integer;
+  liste: tRefListe;
+  schritt: integer;
   xAusgabe: boolean;
 
   procedure BBKnotenEinfuegen ( inZahl : integer;
@@ -59,6 +68,8 @@ program binaerenBaumBauen(input, output);
   end; { BBKnotenEinfuegen }
 
 
+  
+
   procedure BBAufbauen (var outRefWurzel : tRefBinBaum); 
   { baut fuer eine Eingabe von integer-Zahlen <> 0 einen Suchbaum auf und gibt einen Zeiger auf dessen Wurzel
       in outRefWurzel zurueck }
@@ -81,46 +92,85 @@ program binaerenBaumBauen(input, output);
     begin  
       writeln('Aktueller Knoten: ',outRefWurzel^.info, ' schritt: ', schritt);
       schritt := schritt +1;
-      writeln('wir gehen links in Knoten: ', outRefWurzel^.info);
+      writeln('<- ', outRefWurzel^.info);
       BBAusgeben := BBAusgeben(outRefWurzel^.links, schritt);
-      writeln('wir gehen rechts in Knoten: ', outRefWurzel^.info);
+      writeln('-> ', outRefWurzel^.info);
       BBAusgeben := BBAusgeben(outRefWurzel^.rechts, schritt);
     end;
   end;    
   
-  function x(B:tRefBinBaum; schritt:integer; seite:char):boolean;   
-  begin
-    
-    if B = nil then
-    begin
-      write('Abbruchbedingung aktueller Schritt: ', schritt); 
-      write(', Seite: ', seite);
-      writeln(', Abbruch, also x: TRUE');
-      x := true;      
-    end
-    else
-    begin
-     write('Nach Abbruch     aktueller Schritt: ', schritt);
-     write(', Seite: ', seite);
-     writeln(', B^.info: ', B^.info);
-     x := x(B^.links, schritt+1, 'l') XOR x(B^.rechts, schritt+1, 'r');
-     write('Nach Abbruch     aktueller Schritt: ', schritt);
-     write(', Seite: ', seite);
-     writeln(', x: ', x);
+  procedure ListeAufbauen(var outRefAnfang : tRefListe); 
+  { baut eine Liste aus einzulesenden integer-Zahlen auf, hängt vorne an. S. 172 }
 
-    end;
-    //schritt := schritt +1;
-  end;
+    var
+    Zeiger : tRefListe;
+    Zahl : integer;
+    
+    begin
+      { zunaechst outRefAnfang auf nil setzen, da mit der leeren Liste gestartet wird }
+    outRefAnfang := nil; 
+    readln (Zahl);
+    while Zahl <> 0 do 
+    begin
+      new (Zeiger);
+      Zeiger^.wert := Zahl;
+      Zeiger^.next := outRefAnfang;
+      outRefAnfang := Zeiger;
+      readln (Zahl)
+    end; { while-Schleife } 
+    //writeln('outRefAnfang: ', outRefAnfang^.wert);
+    //while Zeiger <> nil do
+    { wird gebraucht, um outRefAnfang auf das erste Element zu setzen }
+    //begin
+    //  writeln('Liste1: ', Zeiger^.wert);
+    //  outRefAnfang := Zeiger;
+    //  Zeiger := Zeiger^.next;      
+    //end;
+  end; { ListeAufbauen }
+
+  function x(A:tRefListe; B:tRefBinBaum; schritt:integer) : boolean;
+  
+  begin
+    if A = nil then
+      x:= true
+    else 
+    begin
+      //writeln('A: ' , A^.wert, ' B: ', B^.info);
+      x := false;
+      if B = nil then
+        x := false
+      else
+      begin
+        if A^.wert = B^.info then
+        begin
+          writeln(' = A: ' , A^.wert, ' B: ', B^.info, ' schritt: ', schritt);
+          x := x(A^.next, B^.links, schritt+1) OR x(A^.next, B^.rechts, schritt+1);
+        end
+        else
+        begin
+          writeln('!= A: ' , A^.wert, ' B: ', B^.info, ' schritt: ', schritt);
+          x:= false;
+        end
+      end
+      
+    end
+  end; 
+
   
 
 begin
   writeln('wir bauen Baum');
   BBAufbauen(binBaum);
+  writeln('wir bauen Liste (bitte in umgekehrter Reihenfolge eingeben');
+  ListeAufbauen(liste);
+  writeln('Liste erstes Element: ', liste^.wert);
   //writeln('wir geben Baum nun aus');
-  //schritt := 0;
-  //BBAusgeben(binBaum,schritt);
-  
-  xAusgabe := x(binBaum, 0, 'w');
+  schritt := 0;
+  BBAusgeben(binBaum,schritt);
+  writeln('----- wir rufen x auf ----');
+  schritt := 0;
+  xAusgabe := x(liste, binBaum, schritt);
+  //xAusgabe := x(binBaum, 0, 'w');
   writeln('Ausgabe von x: ', xAusgabe);
 
 end.

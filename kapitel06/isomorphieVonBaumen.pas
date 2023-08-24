@@ -17,9 +17,15 @@ program isomorphieVonBaumen(input, output);
 {----------- hier fügen Sie bitte Ihre Funktion ein --------------------------}
   function check(inBaumA:tRefBinBaum; inBaumB:tRefBinBaum):boolean;
   {entscheidet, ob zwei Bäume isomorph sind}
-
+  
   begin
-    check := true
+    if(inBaumA^.li = inBaumB^.li OR 
+       inBaumA^.re = inBaumB^.li OR 
+       inBaumA^.re = inBaumB^.re OR 
+       inBaumA^.re = inBaumB^.re) then
+       check := true
+  
+    check := true;
   end;
 {----------- hier endet Ihre Funktion ----------------------------------------}
 
