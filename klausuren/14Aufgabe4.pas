@@ -128,25 +128,63 @@ program binaerenBaumBauen(input, output);
     //end;
   end; { ListeAufbauen }
 
-  function rek(A:tRefBinBaum; z:integer) : boolean;
-  
+
+  function rek2(A: tRefBinBaum; z: integer) : boolean;
   begin
-    if A = nil then
-      rek:= true
-    else 
+    if(A <> nil) then
     begin
-      if(A^.info > z) then
+      if (A^.info > z) then
         z := A^.info;
-      rek := rek(A^.links, z) AND rek(A^.rechts,z);
+    end;
+    { base case } 
+    if (A^.links = nil) AND (A^.rechts = nil) then
+      begin
+        if (A^.info >= z)then
+        begin
+          writeln('base case reached: ' , A^.info, ' z: ', z);
+          rek2 := true
+        end
+        else 
+          rek2 := false
+      end
+    else
+    begin
+      writeln('here ', A^.info, ' rek2: ', rek2);
+      if(A^.links <> nil) then
+        rek2 := rek2(A^.links, z);
+      if(A^.rechts <> nil) then
+        rek2 := rek2(A^.rechts,z);
     end
   end;
 
-  
+  function rek3(A: tRefBinBaum; z: integer) : boolean;
+  begin
+    if (A <> nil) then
+    begin
+      if(A^.info > z) then
+        z := A^.info;
+      if(A^.links = nil) AND (A^.rechts = nil) then
+      begin
+        writeln('Blatt gefunden: ', A^.info, ' z: ', z);
+        if(A^.info >= z) then
+          rek3 := true
+        else 
+          rek3 := false
+      end
+      else
+      begin
+        writeln('Absteigen: ', A^.info, ' z: ' , z);
+        rek3 := rek3(A^.links, z);
+        rek3 := rek3(A^.rechts, z);
+      end 
+        
+    end
+  end;
 
 begin
   writeln('wir bauen Baum');
   BBAufbauen(binBaum);
-  xAusgabe := rek(binBaum,0);
+  xAusgabe := rek3(binBaum,0);
   writeln('Ausgabe: ', xAusgabe);
 
 end.
