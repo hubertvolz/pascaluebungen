@@ -129,33 +129,7 @@ program binaerenBaumBauen(input, output);
   end; { ListeAufbauen }
 
 
-  function rek2(A: tRefBinBaum; z: integer) : boolean;
-  begin
-    if(A <> nil) then
-    begin
-      if (A^.info > z) then
-        z := A^.info;
-    end;
-    { base case } 
-    if (A^.links = nil) AND (A^.rechts = nil) then
-      begin
-        if (A^.info >= z)then
-        begin
-          writeln('base case reached: ' , A^.info, ' z: ', z);
-          rek2 := true
-        end
-        else 
-          rek2 := false
-      end
-    else
-    begin
-      writeln('here ', A^.info, ' rek2: ', rek2);
-      if(A^.links <> nil) then
-        rek2 := rek2(A^.links, z);
-      if(A^.rechts <> nil) then
-        rek2 := rek2(A^.rechts,z);
-    end
-  end;
+
 
   function rek3(A: tRefBinBaum; z: integer) : boolean;
   begin
